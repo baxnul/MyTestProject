@@ -3,8 +3,13 @@ from selenium.webdriver.common.by import By
 """(Tuple have: By selector, locator, timeout wait)"""
 
 
-class MainPageLocators:
+class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+
+
+class MainPageLocators:
+    pass
 
 
 class LoginPageLocators:
