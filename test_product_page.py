@@ -18,7 +18,36 @@ def test_guest_can_add_product_to_basket(browser, link):
     browser.delete_all_cookies()
     page = ProductPage(browser, link)
     page.open()
+    page.should_not_be_success_message()
     page.press_add_basket()
     page.solve_quiz_and_get_code()
-    page.should_be_name_product_before_equal_after_add_basket()
-    page.should_be_price_product_before_equal_after_add_basket()
+    page.should_be_name_product_before_add_basket_equal_after_add_basket()
+    page.should_be_price_product_before_add_basket_equal_after_add_basket()
+
+
+@pytest.mark.xfail
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    """Пользователь НЕ должен увидеть после добавления товара в корзину сообщение,
+     об успешном добавлении товара"""
+    page = ProductPage(browser, links[0])
+    page.open()
+    page.press_add_basket()
+    page.solve_quiz_and_get_code()
+    page.should_not_be_success_message()
+
+
+def test_guest_cant_see_success_message(browser):
+    """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
+    page = ProductPage(browser, links[0])
+    page.open()
+    page.should_not_be_success_message()
+
+
+@pytest.mark.xfail
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    """Сообщение добавления в корзину должно исчезнуть после добавления товара в корзину"""
+    page = ProductPage(browser, links[0])
+    page.open()
+    page.press_add_basket()
+    page.solve_quiz_and_get_code()
+    page.should_is_disappeared()
