@@ -5,12 +5,12 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
-    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")  # link for negative test
+    BASKET_BUTTON = (By.CSS_SELECTOR, ".basket-mini.pull-right.hidden-xs .btn.btn-default")
 
 
 class MainPageLocators:
     pass
-
 
 class LoginPageLocators:
     LOGIN_FORM = (By.ID, "login_form")
@@ -24,3 +24,8 @@ class ProductPageLocators:
     PRODUCT_NAME_AFTER_ADD_BASKET = (By.CSS_SELECTOR, ".alert-success > .alertinner strong")
     PRICE_PRODUCT_AFTER_ADD_BASKET = (By.CSS_SELECTOR, ".alert-info > .alertinner strong")
     SUCCESS_MESSAGE_ADDING_BASKET = (By.CSS_SELECTOR, ".alert-success .alertinner")
+
+
+class BasketPageLocators:
+    EMPTY_BASKET = (By.CSS_SELECTOR, "#content_inner p")
+    PRODUCT_IN_BASKET = (By.CSS_SELECTOR, ".row h2")

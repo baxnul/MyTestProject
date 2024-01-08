@@ -23,11 +23,12 @@ class BasePage:
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
-    def is_element_present(self, by, locator) -> bool:
+    def is_element_present(self, by, locator, timeout=4) -> bool:
         """Проверка на присутсвие элемента на странице"""
         try:
-            self.browser.find_element(by, locator)
-        except NoSuchElementException:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(
+                EC.presence_of_element_located((by, locator)))
+        except TimeoutException:
             return False
         return True
 
@@ -60,6 +61,11 @@ class BasePage:
         except TimeoutException:
             return False
         return True
+
+    def go_to_basket_page(self):
+        """Переходит в корзину по кнопке в шапке сайта"""
+        basket_button = self.browser.find_element(*BasePageLocators.BASKET_BUTTON)
+        basket_button.click()
 
     def solve_quiz_and_get_code(self):
         """Функция для вычисления задачи из алерта"""

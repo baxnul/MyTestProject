@@ -1,5 +1,6 @@
 import pytest
 from pages.product_page import ProductPage
+from pages.basket_page import BasketPage
 
 links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
@@ -69,3 +70,12 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
+
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    """Не должно быть товаров в корзине и должна быть надпись о том что корзина пустая"""
+    page = BasketPage(browser, links[0])
+    page.open()
+    page.go_to_basket_page()
+    page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
+    page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая
