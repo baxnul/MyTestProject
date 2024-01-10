@@ -24,10 +24,11 @@ class TestUserAddToBasketFromProductPage:
         email = str(time.time()) + "@fakemail.org"
         password = "test1test1"
 
-        page = LoginPage(browser, link)
+        page = ProductPage(browser, link)
         page.open()
-        page.register_new_user(email, password)
-        page.should_be_authorized_user()
+        login_page = LoginPage(browser, browser.current_url)
+        login_page.register_new_user(email, password)
+        login_page.should_be_authorized_user()
 
     def test_user_cant_see_success_message(self, browser):
         """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
@@ -113,8 +114,9 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
 @pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     """Не должно быть товаров в корзине и должна быть надпись о том что корзина пустая"""
-    page = BasketPage(browser, links[0])
+    page = ProductPage(browser, links[0])
     page.open()
     page.go_to_basket_page()
-    page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
-    page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
+    basket_page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая

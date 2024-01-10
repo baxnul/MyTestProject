@@ -30,5 +30,5 @@ class ProductPage(BasePage):
 
     def should_is_disappeared(self):
         """Сообщение добавления в корзину должно исчезнуть"""
-        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE_ADDING_BASKET), \
-            "The success message does not disappear, but should"
+        assert self.is_disappeared(
+            *ProductPageLocators.SUCCESS_MESSAGE_ADDING_BASKET), "The success message does not disappear, but should"

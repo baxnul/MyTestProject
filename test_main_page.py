@@ -1,4 +1,3 @@
-import time
 import pytest
 from pages.basket_page import BasketPage
 from pages.login_page import LoginPage
@@ -25,8 +24,9 @@ class TestLoginFromMainPage:
 
 def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
     """Не должно быть товаров в корзине и должна быть надпись о том что корзина пустая"""
-    page = BasketPage(browser, link)
+    page = MainPage(browser, link)
     page.open()
     page.go_to_basket_page()
-    page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
-    page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
+    basket_page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая

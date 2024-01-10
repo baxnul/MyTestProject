@@ -36,4 +36,5 @@ class BasketPage(BasePage):
         language = self.browser.execute_script(
             "return window.navigator.userLanguage || window.navigator.language")  # Вернет язык en, ru, и.т.д.
         text_basket_empty = languages.get(str(language))
-        assert text_basket_empty in self.get_element(*BasketPageLocators.EMPTY_BASKET).text, "Корзина должна быть пустой"
+        assert text_basket_empty in self.get_element(
+            *BasketPageLocators.EMPTY_BASKET).text, "Корзина должна быть пустой"
