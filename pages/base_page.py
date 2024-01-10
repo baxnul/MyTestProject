@@ -67,6 +67,10 @@ class BasePage:
         basket_button = self.browser.find_element(*BasePageLocators.BASKET_BUTTON)
         basket_button.click()
 
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
     def solve_quiz_and_get_code(self):
         """Функция для вычисления задачи из алерта"""
         alert = self.browser.switch_to.alert
