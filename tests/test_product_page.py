@@ -1,9 +1,10 @@
 import pytest
+from loguru import logger
+
 from pages.login_page import LoginPage
 from pages.product_page import ProductPage
 from pages.basket_page import BasketPage
 import time
-from logger.setting_logger import logging
 
 links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
@@ -19,6 +20,7 @@ links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?pr
 
 class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
+    @logger.catch()
     def setup(self, browser):
         """Регистрация нового пользователя"""
         link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
@@ -31,19 +33,18 @@ class TestUserAddToBasketFromProductPage:
         login_page.register_new_user(email, password)
         login_page.should_be_authorized_user()
 
+    @logger.catch()
     def test_user_cant_see_success_message(self, browser):
         """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
-        logging.info("Starting test_user_cant_see_success_message")
         page = ProductPage(browser, links[0])
         page.open()
         page.should_not_be_success_message()
-        logging.info("Test test_user_cant_see_success_message passed successfully")
 
     @pytest.mark.need_review
+    @logger.catch()
     def test_user_can_add_product_to_basket(self, browser):
         """Пользователь может добавлять товары в корзину и наименование и цена товара на странице
         и в сообщение успешного добавления в корзину одинаковые"""
-        logging.info("Starting test_user_can_add_product_to_basket")
         link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
         browser.delete_all_cookies()
         page = ProductPage(browser, link)
@@ -53,15 +54,14 @@ class TestUserAddToBasketFromProductPage:
         page.solve_quiz_and_get_code()
         page.should_be_name_product_before_add_basket_equal_after_add_basket()
         page.should_be_price_product_before_add_basket_equal_after_add_basket()
-        logging.info("Test test_user_can_add_product_to_basket passed successfully")
 
 
 @pytest.mark.parametrize('link', links)
 @pytest.mark.need_review
+@logger.catch()
 def test_guest_can_add_product_to_basket(browser, link):
     """Пользователь может добавлять товары в корзину и наименование и цена товара на странице
     и в сообщение успешного добавления в корзину одинаковые"""
-    logging.info("Starting test_guest_can_add_product_to_basket")
     browser.delete_all_cookies()
     page = ProductPage(browser, link)
     page.open()
@@ -70,72 +70,65 @@ def test_guest_can_add_product_to_basket(browser, link):
     page.solve_quiz_and_get_code()
     page.should_be_name_product_before_add_basket_equal_after_add_basket()
     page.should_be_price_product_before_add_basket_equal_after_add_basket()
-    logging.info("Test test_guest_can_add_product_to_basket passed successfully")
 
 
 @pytest.mark.xfail
+@logger.catch()
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     """Пользователь НЕ должен увидеть после добавления товара в корзину сообщение,
      об успешном добавлении товара"""
-    logging.info("Starting test_guest_cant_see_success_message_after_adding_product_to_basket")
     page = ProductPage(browser, links[0])
     page.open()
     page.press_add_basket()
     page.solve_quiz_and_get_code()
     page.should_not_be_success_message()
-    logging.info("Test test_guest_cant_see_success_message_after_adding_product_to_basket passed successfully")
 
 
+@logger.catch()
 def test_guest_cant_see_success_message(browser):
     """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
-    logging.info("Starting test_guest_cant_see_success_message")
     page = ProductPage(browser, links[0])
     page.open()
     page.should_not_be_success_message()
-    logging.info("Test test_guest_cant_see_success_message passed successfully")
 
 
 @pytest.mark.xfail
+@logger.catch()
 def test_message_disappeared_after_adding_product_to_basket(browser):
     """Сообщение добавления в корзину должно исчезнуть после добавления товара в корзину"""
-    logging.info("Starting test_message_disappeared_after_adding_product_to_basket")
     page = ProductPage(browser, links[0])
     page.open()
     page.press_add_basket()
     page.solve_quiz_and_get_code()
     page.should_is_disappeared()
-    logging.info("Test test_message_disappeared_after_adding_product_to_basket passed successfully")
 
 
+@logger.catch()
 def test_guest_should_see_login_link_on_product_page(browser):
     """Пользователь должен видеть кнопку со ссылкой для перехода к авторизации"""
-    logging.info("Starting test_guest_should_see_login_link_on_product_page")
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()
     page.should_be_login_link()
-    logging.info("Test test_guest_should_see_login_link_on_product_page passed successfully")
 
 
 @pytest.mark.need_review
+@logger.catch()
 def test_guest_can_go_to_login_page_from_product_page(browser):
     """Пользователь может перейти на страницу авторизации"""
-    logging.info("Starting test_guest_can_go_to_login_page_from_product_page")
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
-    logging.info("Test test_guest_can_go_to_login_page_from_product_page passed successfully")
 
 
 @pytest.mark.need_review
+@logger.catch()
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     """Не должно быть товаров в корзине и должна быть надпись о том что корзина пустая"""
-    logging.info("Starting test_guest_cant_see_product_in_basket_opened_from_product_page")
     page = ProductPage(browser, links[0])
     page.open()
     page.go_to_basket_page()
     basket_page = BasketPage(browser, browser.current_url)
     basket_page.should_not_be_product_in_basket()  # Не должно быть товаров в корзине
     basket_page.should_be_title_basket_empty()  # Должна быть надпись о том что корзина пустая
-    logging.info("Test test_guest_cant_see_product_in_basket_opened_from_product_page passed successfully")
