@@ -2,9 +2,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as OptionsFirefox
-from loguru import logger
-
-logger.add("./logs/test.log", format="{time} {level} {message}", level="DEBUG", rotation="10 MB", compression="zip")
 
 
 def pytest_addoption(parser):

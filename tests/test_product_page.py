@@ -1,5 +1,4 @@
 import pytest
-from loguru import logger
 
 from pages.login_page import LoginPage
 from pages.product_page import ProductPage
@@ -20,7 +19,6 @@ links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?pr
 
 class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
-    @logger.catch()
     def setup(self, browser):
         """Регистрация нового пользователя"""
         link = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
@@ -33,7 +31,6 @@ class TestUserAddToBasketFromProductPage:
         login_page.register_new_user(email, password)
         login_page.should_be_authorized_user()
 
-    @logger.catch()
     def test_user_cant_see_success_message(self, browser):
         """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
         page = ProductPage(browser, links[0])
@@ -41,7 +38,6 @@ class TestUserAddToBasketFromProductPage:
         page.should_not_be_success_message()
 
     @pytest.mark.need_review
-    @logger.catch()
     def test_user_can_add_product_to_basket(self, browser):
         """Пользователь может добавлять товары в корзину и наименование и цена товара на странице
         и в сообщение успешного добавления в корзину одинаковые"""
@@ -58,7 +54,6 @@ class TestUserAddToBasketFromProductPage:
 
 @pytest.mark.parametrize('link', links)
 @pytest.mark.need_review
-@logger.catch()
 def test_guest_can_add_product_to_basket(browser, link):
     """Пользователь может добавлять товары в корзину и наименование и цена товара на странице
     и в сообщение успешного добавления в корзину одинаковые"""
@@ -73,7 +68,6 @@ def test_guest_can_add_product_to_basket(browser, link):
 
 
 @pytest.mark.xfail
-@logger.catch()
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     """Пользователь НЕ должен увидеть после добавления товара в корзину сообщение,
      об успешном добавлении товара"""
@@ -84,7 +78,6 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     page.should_not_be_success_message()
 
 
-@logger.catch()
 def test_guest_cant_see_success_message(browser):
     """Пользователь НЕ должен увидеть сообщение об успешном добавлении товара в корзину"""
     page = ProductPage(browser, links[0])
@@ -93,7 +86,6 @@ def test_guest_cant_see_success_message(browser):
 
 
 @pytest.mark.xfail
-@logger.catch()
 def test_message_disappeared_after_adding_product_to_basket(browser):
     """Сообщение добавления в корзину должно исчезнуть после добавления товара в корзину"""
     page = ProductPage(browser, links[0])
@@ -103,7 +95,6 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.should_is_disappeared()
 
 
-@logger.catch()
 def test_guest_should_see_login_link_on_product_page(browser):
     """Пользователь должен видеть кнопку со ссылкой для перехода к авторизации"""
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
@@ -113,7 +104,6 @@ def test_guest_should_see_login_link_on_product_page(browser):
 
 
 @pytest.mark.need_review
-@logger.catch()
 def test_guest_can_go_to_login_page_from_product_page(browser):
     """Пользователь может перейти на страницу авторизации"""
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
@@ -123,7 +113,6 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
 
 
 @pytest.mark.need_review
-@logger.catch()
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     """Не должно быть товаров в корзине и должна быть надпись о том что корзина пустая"""
     page = ProductPage(browser, links[0])
